@@ -7,9 +7,11 @@ const PORT = 8000;
 app.use(express.json());
 
 app.post('/', async (req, res) => {
+    console.log('REQUES REALIZED')
     const {composeInfo} = req.body;
     const result = await dockerManager.up(composeInfo);
 
+    console.log('REQUEST FINISHED')
     res.json({result});
 })
 
