@@ -1,0 +1,18 @@
+services:
+  backend:
+    image: "node:21-alpine3.17"
+    cpus: ${BK_CPUS}
+    mem_limit: ${BK_MEMORY}
+    volumes:
+      - ../../applications/node:/application
+    env_file:
+      - ./.env
+    ports:
+      - "3000"
+    command: '/bin/sh -c "cd /application && npm i && node app"'
+  database:
+    image: "postgres:16-alpine3.18"
+    cpus: ${DB_CPUS}
+    mem_limit: ${DB_MEMORY}
+    env_file:
+      - ./.env

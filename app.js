@@ -1,27 +1,34 @@
-const express = require('express');
-const dockerManager = require('./dockerManager');
+const path = require("path");
+const express = require("express");
+const dockerManager = require("./src/dockerManager");
 
 const app = express();
 const PORT = 8000;
 
 app.use(express.json());
+app.use("/", express.static(path.join(__dirname, "public")));
 
-app.post('/', async (req, res) => {
-    console.log('REQUES REALIZED')
-    const {composeInfo} = req.body;
-    const result = await dockerManager.up(composeInfo);
+app.get("/options", async (req, res) => {
+  const result = dockerManager.getAvailablesConfigs();
+  console.log(result);
+  res.json({ result });
+});
 
-    console.log('REQUEST FINISHED')
-    res.json({result});
-})
+app.get("/applications", (req, res) => {
+  const result = dockerManager.getApplications();
+  res.json({ result });
+});
 
-app.post('/down', (req, res) => {
-    const {composeInfo} = req.body;
-    dockerManager.down(composeInfo);
+app.post("/up", async (req, res) => {
+  const result = await dockerManager.runComposer(req.body);
+  res.json(result);
+});
 
-    res.json({});
-})
+app.post("/down", async (req, res) => {
+  const result = dockerManager.removeComposer(req.body);
+  res.json(result);
+});
 
 app.listen(PORT, () => {
-    console.log(`Listening on PORT (${PORT})`);
-})
+  console.log(`Listening on PORT (${PORT})`);
+});

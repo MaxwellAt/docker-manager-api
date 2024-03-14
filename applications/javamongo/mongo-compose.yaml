@@ -1,0 +1,36 @@
+version: '3'
+services:
+  java_service:
+    image: maven:3.8.4-openjdk-17
+    volumes:
+      - "../javamongo:/javamongo"
+    command:  /bin/sh -c "cd javamongo && mvn clean package -DskipTests && mv ./target/*.jar ./target/javamongo.jar &&  java -jar ./target/javamongo.jar"
+    deploy:
+      resources:
+        limits:
+          memory: 200M
+        reservations:
+          memory: 100M
+    environment:
+      DB_NAME: database
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_PORT: ${DB_PORT}
+      DB_HOST: ${DB_HOST}
+      CONTAINER_NAME : mongodb
+      NODE_ENV: javaEnv
+    ports:
+      - "8082:8082"
+  database:
+    image: mongo:latest
+    container_name: mongodb
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+    environment:
+      MONGO_INITDB_DATABASE: ${DB_NAME}
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "27017:27017"
+
