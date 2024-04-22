@@ -2,13 +2,13 @@ const configSelection = document.querySelector("#config-selection");
 const applications = document.querySelector("#applications");
 const reqBtn = document.querySelector("#request-btn");
 
-const apiURL = "http://localhost:8000";
+const apiURL = "http://localhost";
 
 getConfigurations();
 getApplications();
 
 async function getApplications() {
-  const result = await fetch(apiURL + "/applications", {
+  const result = await fetch(apiURL + ":8000/applications", {
     method: "GET",
   });
 
@@ -22,27 +22,19 @@ function renderApplications(data) {
   applications.innerHTML = "";
 
   data.map((curr) => {
-    const component = document.createElement("div");
-    const button = document.createElement("button");
+    const component = getCard(curr);
+    const button = component.querySelector(".remove");
 
     button.addEventListener("click", () =>
       removeApplication(curr.composerFile)
     );
 
-    component.innerHTML = `
-            <h3>${curr.conf}</h3>
-            <p>${curr.composerFile}</p>
-            <p>Port: ${curr.port}</p>
-        `;
-
-    component.appendChild(button);
-    button.innerHTML = "remove";
     applications.appendChild(component);
   });
 }
 
 async function getConfigurations() {
-  const result = await fetch(apiURL + "/options", {
+  const result = await fetch(apiURL + ":8000/options", {
     method: "GET",
   });
   const data = await result.json();
@@ -72,7 +64,7 @@ async function buildContainer() {
     },
   });
 
-  const result = await fetch(apiURL + "/up", {
+  const result = await fetch(apiURL + ":8000/up", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -85,7 +77,7 @@ async function buildContainer() {
 }
 
 function removeApplication(composerFile) {
-  fetch(apiURL + "/down", {
+  fetch(apiURL + ":8000/down", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -94,4 +86,34 @@ function removeApplication(composerFile) {
       composerFile,
     }),
   });
+}
+
+function getCard({ conf, port, composerFile, backend, database }) {
+  const card = document.createElement("div");
+  card.innerHTML = `
+  <div class="card">
+  <div class="card-header">
+    ${conf} 
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">${composerFile}</h5>
+    <div class="d-flex g-3">
+    <div class="p-3 bg-primary-subtle rounded flex-grow-1 mx-1">
+      <h6>Backend</h6>
+      <p class="card-text">Cpus: ${backend.cpu}</p>
+      <p class="card-text">Memória Ram: ${backend.ram}</p>
+    </div>
+    <div class="p-3 bg-primary-subtle rounded flex-grow-1 mx-1">
+      <h6>Database</h6>
+      <p class="card-text">Cpus: ${database.cpu}</p>
+      <p class="card-text">Memória Ram: ${database.ram}</p>
+    </div>
+    </div>
+    <hr>
+    <a href="${apiURL}:${port}" target="_blank" class="btn btn-primary">Application</a>
+    <a href="#" class="remove btn btn-danger">Remove</a>
+  </div>
+  </div>`;
+
+  return card;
 }
