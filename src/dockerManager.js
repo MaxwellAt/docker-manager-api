@@ -27,7 +27,7 @@ async function runComposer({ conf, backend, database }) {
   const config = await createConfig(backend, database);
   const compose = await dockerAPI.runComposeFile(finfo);
   const newApp = { ...compose, backend, database, conf };
-  await dockerAPI.allowPort(newApp.port);
+  //await dockerAPI.allowPort(newApp.port);
 
   applications.push(newApp);
 
@@ -42,7 +42,7 @@ async function removeComposer({ composerFile }) {
     const index = applications.indexOf(application);
     applications.splice(index, 1);
 
-    await dockerAPI.denyPort(application.port);
+    //await dockerAPI.denyPort(application.port);
     await dockerAPI.removeComposerFile(application.composerPath);
     fs.rmSync(application.composerPath);
 

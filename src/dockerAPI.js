@@ -83,6 +83,4 @@ module.exports = {
   createComposeFile,
   up,
   down,
-  allowPort,
-  denyPort,
 };
