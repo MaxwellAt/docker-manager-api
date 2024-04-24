@@ -33,10 +33,165 @@
       </div>
     </nav>
 
-    <main style="margin: 0 auto; max-width: 720px">
+    <main style="margin: 0 auto; margin-top: 100px; max-width: 720px">
       <h1>Test 2</h1>
-      <select id="config-selection"></select>
-      <button id="request-btn">Build Container</button>
+
+      <!-- Button trigger modal -->
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop"
+      >
+        Add Container
+      </button>
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="staticBackdrop"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                Create Container
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+              <div class="input-group mb-3">
+                <label class="input-group-text" for="config-selection"
+                  >Options</label
+                >
+                <select class="form-select" id="config-selection"></select>
+              </div>
+
+              <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne"
+                      aria-expanded="true"
+                      aria-controls="collapseOne"
+                    >
+                      Backend
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseOne"
+                    class="accordion-collapse collapse show"
+                  >
+                    <div class="accordion-body">
+                      <!-- BACKEND CONFIG -->
+                      <div>
+                        <label for="backend-ram" class="form-label"
+                          >Mem. Ram (in Megabytes)</label
+                        >
+                        <input
+                          type="range"
+                          class="form-range"
+                          min="50"
+                          max="1024"
+                          step="1"
+                          id="backend-ram"
+                        />
+
+                        <label for="backend-cpu" class="form-label"
+                          >Cpus:</label
+                        >
+                        <input
+                          type="range"
+                          class="form-range"
+                          min="0"
+                          max="1"
+                          step="0.1"
+                          id="backend-cpu"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseTwo"
+                      aria-expanded="false"
+                      aria-controls="collapseTwo"
+                    >
+                      Database
+                    </button>
+                  </h2>
+                  <div id="collapseTwo" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                      <!-- DATABASE CONFIG -->
+                      <div>
+                        <label for="database-ram" class="form-label"
+                          >Mem. Ram (in Megabytes)</label
+                        >
+                        <input
+                          type="range"
+                          class="form-range"
+                          min="50"
+                          max="1024"
+                          step="1"
+                          id="database-ram"
+                        />
+
+                        <label for="database-cpu" class="form-label"
+                          >Cpus:</label
+                        >
+                        <input
+                          type="range"
+                          class="form-range"
+                          min="0.1"
+                          max="1"
+                          step="0.1"
+                          id="database-cpu"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <hr />
+
+              <button class="btn btn-primary container-fluid" id="request-btn">
+                Build
+              </button>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div id="applications"></div>
     </main>
   </body>

@@ -1,4 +1,9 @@
 const configSelection = document.querySelector("#config-selection");
+const backendCpuField = document.querySelector("#backend-cpu");
+const backendRamField = document.querySelector("#backend-ram");
+const databaseCpuField = document.querySelector("#database-cpu");
+const databaseRamField = document.querySelector("#database-ram");
+
 const applications = document.querySelector("#applications");
 const reqBtn = document.querySelector("#request-btn");
 
@@ -52,15 +57,20 @@ reqBtn.addEventListener("click", buildContainer);
 
 async function buildContainer() {
   const selectedConf = configSelection.value;
+  const backendCpu = backendCpuField.value;
+  const backendRam = backendRamField.value;
+  const databaseCpu = databaseCpuField.value;
+  const databaseRam = databaseRamField.value;
+
   const requestBody = JSON.stringify({
     conf: selectedConf,
     backend: {
-      cpu: "0.5",
-      ram: "50M",
+      cpu: backendCpu,
+      ram: `${backendRam}M`,
     },
     database: {
-      cpu: "0.5",
-      ram: "50M",
+      cpu: databaseCpu,
+      ram: `${databaseRam}M`,
     },
   });
 
@@ -91,7 +101,7 @@ function removeApplication(composerFile) {
 function getCard({ conf, port, composerFile, backend, database }) {
   const card = document.createElement("div");
   card.innerHTML = `
-  <div class="card">
+  <div class="card my-3">
   <div class="card-header">
     ${conf} 
   </div>
