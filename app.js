@@ -21,7 +21,7 @@ app.get("/applications", (req, res) => {
 
 app.post("/up", async (req, res) => {
   const result = await dockerManager.runComposer(req.body);
-  res.json(result);
+  res.json({ success: true, message: "Container build successfully!", result });
 });
 
 app.post("/down", async (req, res) => {
