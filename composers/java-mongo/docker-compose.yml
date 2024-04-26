@@ -1,0 +1,18 @@
+services:
+  backend:
+    image: maven:3.8.4-openjdk-17
+    cpus: ${BK_CPUS}
+    mem_limit: ${BK_MEMORY}
+    volumes:
+      - "../../applications/javamongo:/javamongo"
+    env_file:
+      - "./.env"
+    ports:
+      - 3000
+    command: /bin/sh -c "cd javamongo && mvn clean package -DskipTests && mv ./target/*.jar ./target/javamongo.jar &&  java -jar ./target/javamongo.jar"
+  database:
+    image: mongo:latest
+    cpus: ${DB_CPUS}
+    mem_limit: ${DB_MEMORY}
+    env_file:
+      - "./.env"
