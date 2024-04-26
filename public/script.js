@@ -18,7 +18,7 @@ async function getApplications() {
   });
 
   const data = await result.json();
-  console.log(data);
+  //console.log(data);
 
   renderApplications(data.result);
 }
@@ -53,7 +53,12 @@ function renderConfig(data) {
   }, "");
 }
 
-reqBtn.addEventListener("click", buildContainer);
+reqBtn.addEventListener("click", async () => {
+  const modalBody = document.querySelector(".modal-body");
+  const setMessage = handleMessage(modalBody);
+  const data = await buildContainer();
+  setMessage(data.message);
+});
 
 async function buildContainer() {
   const selectedConf = configSelection.value;
@@ -82,8 +87,8 @@ async function buildContainer() {
     body: requestBody,
   });
 
-  const data = result.json();
-  console.log(data);
+  const data = await result.json();
+  return data;
 }
 
 function removeApplication(composerFile) {
@@ -126,4 +131,34 @@ function getCard({ conf, port, composerFile, backend, database }) {
   </div>`;
 
   return card;
+}
+
+function handleMessage(body) {
+  body.innerHTML = `
+    <div class="message-body"
+    style="width: 100%; min-height: 200px;text-align: center; position: relative"
+    >
+      <img src="https://media.tenor.com/wpSo-8CrXqUAAAAi/loading-loading-forever.gif"
+      style="position: absolute; 
+      left: 50%; 
+      top: 50%; 
+      transform: translate(-50%, -50%);
+      width:100px; 
+      height:100px;"
+      >  
+      <button class="btn btn-primary container-fluid" style="display: none">Ok</button>
+    <div>
+  `;
+
+  const okButton = body.querySelector(".btn");
+  okButton.addEventListener("click", () => window.location.reload());
+
+  return (message) => {
+    const messageBody = body.querySelector(".message-body");
+    messageBody.innerHTML = `<p style="margin-bottom: 100px">${message}</p>`;
+
+    okButton.style.display = "block";
+
+    messageBody.appendChild(okButton);
+  };
 }
