@@ -29,23 +29,31 @@
     <!-- Nav Bar -->
     <nav class="navbar fixed-top bg-body-tertiary" data-bs-theme="dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Fixed top</a>
+        <a class="navbar-brand" href="#">Doc. Docker</a>
       </div>
     </nav>
 
     <main style="margin: 0 auto; margin-top: 100px; max-width: 720px">
-      <h1>Test 2</h1>
-
-      <!-- Button trigger modal -->
-      <button
-        type="button"
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop"
+      <div
+        style="
+          display: flex;
+          width: 100%;
+          justify-content: space-between;
+          align-items: center;
+        "
       >
-        Add Container
-      </button>
+        <h1>Containers View</h1>
 
+        <!-- Button trigger modal -->
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop"
+        >
+          Add Container
+        </button>
+      </div>
       <!-- Modal -->
       <div
         class="modal fade"
@@ -238,7 +246,19 @@
           </div>
         </div>
       </div>
-      <div id="applications"></div>
+      <div id="applications">
+        <div
+          class="card my-3 rounded"
+          style="
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          <p class="h4">Initialize a container</p>
+        </div>
+      </div>
     </main>
   </body>
 </html>

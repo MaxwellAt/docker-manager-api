@@ -24,15 +24,18 @@ async function getApplications() {
 }
 
 function renderApplications(data) {
+  if (data.length == 0) return;
+
   applications.innerHTML = "";
 
   data.map((curr) => {
     const component = getCard(curr);
     const button = component.querySelector(".remove");
 
-    button.addEventListener("click", () =>
-      removeApplication(curr.composerFile)
-    );
+    button.addEventListener("click", () => {
+      removeApplication(curr.composerFile);
+      window.location.reload();
+    });
 
     applications.appendChild(component);
   });
