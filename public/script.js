@@ -162,3 +162,19 @@ function handleMessage(body) {
     messageBody.appendChild(okButton);
   };
 }
+
+// Setup Dataviwer
+const dataViewers = document.querySelectorAll(".value-viewer");
+dataViewers.forEach((el) => {
+  const inputEl = document.getElementById(el.dataset.for);
+  // Get formating
+  const format = el.innerText;
+
+  // set current value
+  el.innerText = inputEl.value + format;
+
+  // set value on change
+  inputEl.addEventListener("input", () => {
+    el.innerText = inputEl.value + format;
+  });
+});
