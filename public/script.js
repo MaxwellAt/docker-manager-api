@@ -128,7 +128,7 @@ function getCard({ conf, port, composerFile, backend, database }) {
     </div>
     </div>
     <hr>
-    <a href="${apiURL}:${port}" target="_blank" class="btn btn-primary">Application</a>
+    <a href="${apiURL}:${port}" target="_blank" class="btn btn-primary">Run</a>
     <a href="#" class="remove btn btn-danger">Remove</a>
   </div>
   </div>`;
