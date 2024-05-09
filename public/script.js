@@ -30,13 +30,6 @@ function renderApplications(data) {
 
   data.map((curr) => {
     const component = getCard(curr);
-    const button = component.querySelector(".remove");
-
-    button.addEventListener("click", () => {
-      removeApplication(curr.composerFile);
-      window.location.reload();
-    });
-
     applications.appendChild(component);
   });
 }
@@ -82,16 +75,19 @@ async function buildContainer() {
     },
   });
 
-  const result = await fetch(apiURL + ":8000/up", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: requestBody,
-  });
+  try {
+    const result = await fetch(apiURL + ":8000/up", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: requestBody,
+    });
 
-  const data = await result.json();
-  return data;
+    return await result.json();
+  } catch (err) {
+    return err;
+  }
 }
 
 function removeApplication(composerFile) {
@@ -112,6 +108,16 @@ function getCard({ conf, port, composerFile, backend, database }) {
   <div class="card my-3">
   <div class="card-header">
     ${conf} 
+    <div class="status" 
+      style="
+      display: inline-block;
+      width:10px;
+      height:10px;
+      background-color: red;
+      border-radius: 10px;
+      "
+    >
+    </div>
   </div>
   <div class="card-body">
     <h5 class="card-title">${composerFile}</h5>
@@ -128,10 +134,37 @@ function getCard({ conf, port, composerFile, backend, database }) {
     </div>
     </div>
     <hr>
-    <a href="${apiURL}:${port}" target="_blank" class="btn btn-primary">Run</a>
+    <a href="#" class="run btn btn-secondary">Run</a>
     <a href="#" class="remove btn btn-danger">Remove</a>
   </div>
   </div>`;
+
+  // Add events
+  const status = card.querySelector(".status");
+  const removeButton = card.querySelector(".remove");
+  const runButton = card.querySelector(".run");
+
+  removeButton.addEventListener("click", () => {
+    removeApplication(composerFile);
+    window.location.reload();
+  });
+
+  const interval = setInterval(async () => {
+    try {
+      await fetch(`${apiURL}:${port}/`);
+      clearInterval(interval);
+      setAvailable();
+    } catch (error) {
+      console.log("Trying connection on port: " + port);
+    }
+  }, 1000);
+
+  function setAvailable() {
+    status.style.backgroundColor = "green";
+    runButton.href = `${apiURL}:${port}`;
+    runButton.className = "run btn btn-primary";
+    runButton.target = "_blank";
+  }
 
   return card;
 }
