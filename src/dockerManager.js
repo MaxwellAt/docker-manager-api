@@ -1,5 +1,12 @@
+const { promisify } = require("node:util");
+
 const fs = require("fs");
+const readdir = promisify(fs.readdir);
+const rmFile = promisify(fs.rm);
+const writeFile = promisify(fs.writeFile);
+
 const path = require("path");
+
 const dockerAPI = require("./dockerAPI");
 const COMPOSERS_FOLDER = "./composers";
 const CONFIG_FILE = "./config.env";
@@ -10,8 +17,8 @@ function getApplications() {
   return applications;
 }
 
-function getAvailablesConfigs() {
-  return fs.readdirSync(COMPOSERS_FOLDER);
+async function getAvailablesConfigs() {
+  return await readdir(COMPOSERS_FOLDER);
 }
 
 function initContainter(composeName) {
@@ -24,10 +31,10 @@ async function runComposer({ conf, backend, database }) {
   const finfo = await dockerAPI.createComposeFile(
     path.join(COMPOSERS_FOLDER, conf)
   );
+
   const config = await createConfig(backend, database);
   const compose = await dockerAPI.runComposeFile(finfo);
   const newApp = { ...compose, backend, database, conf };
-  //await dockerAPI.allowPort(newApp.port);
 
   applications.push(newApp);
 
@@ -38,13 +45,13 @@ async function removeComposer({ composerFile }) {
   const application = applications.find(
     (app) => app.composerFile === composerFile
   );
+
   if (application) {
     const index = applications.indexOf(application);
     applications.splice(index, 1);
 
-    //await dockerAPI.denyPort(application.port);
     await dockerAPI.removeComposerFile(application.composerPath);
-    fs.rmSync(application.composerPath);
+    await rmFile(application.composerPath);
 
     return { result: "FILE REMOVED" };
   }
@@ -53,7 +60,7 @@ async function removeComposer({ composerFile }) {
 }
 
 async function createConfig(backend, database) {
-  fs.writeFileSync(
+  await writeFile(
     CONFIG_FILE,
     `
 # CPUS can receive fractions (ex: 0.5)

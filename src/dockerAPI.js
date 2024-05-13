@@ -4,23 +4,10 @@ const uuid = require("uuid");
 
 const { promisify } = require("node:util");
 const exec = promisify(require("node:child_process").exec);
+const writeFile = promisify(fs.writeFile);
 
 const ENV_FILE = "./config.env";
 const TMP_FOLDER = "./tmp";
-
-async function allowPort(port) {
-  const command = `ufw allow ${port}`;
-  const result = await exec(command);
-
-  return result.stdout ? true : false;
-}
-
-async function denyPort(port) {
-  const command = `ufw deny ${port}`;
-  const result = await exec(command);
-
-  return result.stdout ? true : false;
-}
 
 async function getContainerPort(container) {
   const command = `docker port ${container}-backend-1`;
@@ -39,7 +26,7 @@ async function createComposeFile(composePath) {
   const result = await exec(command);
 
   const fpath = path.resolve(TMP_FOLDER, fname);
-  fs.writeFileSync(fpath, result.stdout);
+  await writeFile(fpath, result.stdout);
 
   return { fname, fpath };
 }
