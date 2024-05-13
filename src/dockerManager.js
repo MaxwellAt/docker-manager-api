@@ -21,12 +21,6 @@ async function getAvailablesConfigs() {
   return await readdir(COMPOSERS_FOLDER);
 }
 
-function initContainter(composeName) {
-  if (getAvailablesConfigs.includes(composeName)) {
-    dockerAPI.up();
-  }
-}
-
 async function runComposer({ conf, backend, database }) {
   const finfo = await dockerAPI.createComposeFile(
     path.join(COMPOSERS_FOLDER, conf)
@@ -76,7 +70,6 @@ DB_MEMORY=${database.ram}
 
 module.exports = {
   runComposer,
-  initContainter,
   getAvailablesConfigs,
   getApplications,
   removeComposer,

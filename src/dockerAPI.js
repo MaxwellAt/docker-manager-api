@@ -50,24 +50,8 @@ async function removeComposerFile(composePath) {
   return result;
 }
 
-async function up(composePath) {
-  const command = `docker compose -f ${composePath} up`;
-  const result = exec(command);
-
-  return result;
-}
-
-function down(composePath) {
-  const command = `docker compose -f ${composePath} down`;
-  const result = exec(command);
-
-  return result;
-}
-
 module.exports = {
   removeComposerFile,
   runComposeFile,
   createComposeFile,
-  up,
-  down,
 };
