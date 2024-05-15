@@ -1,0 +1,160 @@
+openapi: 3.0.0
+info:
+  title: User Management API
+  version: 1.0.0
+  description: API for managing user information
+
+tags:
+  - name: User
+    description: Operations related to users
+
+paths:
+  /users:
+    post:
+      summary: Create a new user
+      description: Create a new user with the provided information
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The user's full name.
+                username:
+                  type: string
+                  description: A unique identifier used for logging in or identification purposes.
+                email:
+                  type: string
+                  format: email
+                  description: Contact email for communication or account verification.
+                dateOfBirth:
+                  type: string
+                  format: date
+                  description: The user's birthdate, used for age verification or personalized services.
+                gender:
+                  type: string
+                  enum:
+                    - Male
+                    - Female
+                    - Other
+                  description: Gender of the user.
+                location:
+                  type: string
+                  description: The user's current or preferred location.
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The unique identifier for the newly created user.
+
+  /users/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: The ID of the user to retrieve/update
+        schema:
+          type: string
+    get:
+      summary: Get user by ID
+      description: Retrieve user information by user ID
+      tags:
+        - User
+      responses:
+        '200':
+          description: User found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: The user's full name.
+                  username:
+                    type: string
+                    description: A unique identifier used for logging in or identification purposes.
+                  email:
+                    type: string
+                    format: email
+                    description: Contact email for communication or account verification.
+                  dateOfBirth:
+                    type: string
+                    format: date
+                    description: The user's birthdate, used for age verification or personalized services.
+                  gender:
+                    type: string
+                    enum:
+                      - Male
+                      - Female
+                      - Other
+                    description: Gender of the user.
+                  location:
+                    type: string
+                    description: The user's current or preferred location.
+        '404':
+          description: User not found
+
+    put:
+      summary: Update user by ID
+      description: Update user information by user ID
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The user's full name.
+                username:
+                  type: string
+                  description: A unique identifier used for logging in or identification purposes.
+                email:
+                  type: string
+                  format: email
+                  description: Contact email for communication or account verification.
+                dateOfBirth:
+                  type: string
+                  format: date
+                  description: The user's birthdate, used for age verification or personalized services.
+                gender:
+                  type: string
+                  enum:
+                    - Male
+                    - Female
+                    - Other
+                  description: Gender of the user.
+                location:
+                  type: string
+                  description: The user's current or preferred location.
+      responses:
+        '200':
+          description: User updated successfully
+        '404':
+          description: User not found
+
+    delete:
+      summary: Delete user by ID
+      description: Delete user information by user ID
+      tags:
+        - User
+      responses:
+        '204':
+          description: User deleted successfully
+        '404':
+          description: User not found
