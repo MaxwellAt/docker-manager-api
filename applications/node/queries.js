@@ -1,25 +1,19 @@
-const { Movies } = require("./models");
-
-// const Client = require("pg").Client;
-// const client = new Client({
-//   user: process.env.DB_USER,
-//   host: "postgres-db",
-//   database: process.env.DB_NAME,
-//   password: process.env.DB_PASSWORD,
-//   port: process.env.DB_PORT,
-// });
+const { Users } = require("./models");
 
 const getAll = async (request, response) => {
-  const result = await Movies.findAll();
-
-  response.json(result);
+  try {
+    const result = await Users.findAll();
+    response.json(result);
+  } catch (err) {
+    response.status(500).json(err);
+  }
 };
 
 const getById = async (request, response) => {
   const { id } = request.params;
 
   try {
-    const result = await Movies.findOne({ where: { id } });
+    const result = await Users.findOne({ where: { id } });
     response.json(result);
   } catch (err) {
     response.status(500).json(err);
@@ -27,10 +21,25 @@ const getById = async (request, response) => {
 };
 
 const create = async (request, response) => {
-  const { name, storyline, rating } = request.body;
+  const fieldsNames = [
+    "name",
+    "username",
+    "email",
+    "date",
+    "dateOfBirth",
+    "location",
+    "gender",
+  ];
+
+  const fields = {};
+
+  // Adding a default value
+  for (const name of fieldsNames) {
+    fields[name] = request.body[name] || "";
+  }
 
   try {
-    const result = await Movies.create({ name, storyline, rating });
+    const result = await Users.create(fields);
     response.json(result);
   } catch (err) {
     response.status(500).json(err);
@@ -41,7 +50,7 @@ const deleteById = async (request, response) => {
   const { id } = request.params;
 
   try {
-    const result = Movies.destroy({ where: { id } });
+    const result = Users.destroy({ where: { id } });
     response.json(result);
   } catch (err) {
     response.status(500).json(err);

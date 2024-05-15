@@ -19,14 +19,14 @@ app.use(
 app.get("/", (request, response) => {
   response.json({
     info: "Basic movies API",
-    paths: ["/movies", "/movies/:id"],
+    paths: ["/users", "/users/:id"],
   });
 });
 
-app.get("/movies", db.getAll);
-app.get("/movies/:id", db.getById);
-app.delete("/movies/:id", db.deleteById);
-app.post("/movies", db.create);
+app.get("/users", db.getAll);
+app.get("/users/:id", db.getById);
+app.delete("/users/:id", db.deleteById);
+app.post("/users", db.create);
 
 app.listen(PORT, async () => {
   let isConnected = false;
