@@ -3,13 +3,16 @@ const express = require("express");
 const dockerManager = require("./src/dockerManager");
 
 const app = express();
+const cors = require("cors");
+app.use(cors());
+
 const PORT = 8000;
 
 app.use(express.json());
 app.use("/", express.static(path.join(__dirname, "public")));
 
 app.get("/options", async (req, res) => {
-  const result = dockerManager.getAvailablesConfigs();
+  const result = await dockerManager.getAvailablesConfigs();
   console.log(result);
   res.json({ result });
 });
@@ -21,11 +24,12 @@ app.get("/applications", (req, res) => {
 
 app.post("/up", async (req, res) => {
   const result = await dockerManager.runComposer(req.body);
+  console.log(result);
   res.json({ success: true, message: "Container build successfully!", result });
 });
 
 app.post("/down", async (req, res) => {
-  const result = dockerManager.removeComposer(req.body);
+  const result = await dockerManager.removeComposer(req.body);
   res.json(result);
 });
 
