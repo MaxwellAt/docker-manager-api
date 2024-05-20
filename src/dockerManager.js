@@ -2,14 +2,10 @@ const { promisify } = require("node:util");
 
 const fs = require("fs");
 const readdir = promisify(fs.readdir);
-const rmFile = promisify(fs.rm);
-const writeFile = promisify(fs.writeFile);
 
-const path = require("path");
-
-const dockerAPI = require("./dockerAPI");
 const COMPOSERS_FOLDER = "./composers";
-const CONFIG_FILE = "./config.env";
+
+const { Application } = require("./application");
 
 const applications = [];
 
@@ -22,17 +18,16 @@ async function getAvailablesConfigs() {
 }
 
 async function runComposer({ conf, backend, database }) {
-  const finfo = await dockerAPI.createComposeFile(
-    path.join(COMPOSERS_FOLDER, conf)
-  );
+  const newApplication = Application({
+    applicationName: conf,
+    backend,
+    database,
+  });
 
-  const config = await createConfig(backend, database);
-  const compose = await dockerAPI.runComposeFile(finfo);
-  const newApp = { ...compose, backend, database, conf };
+  const applicationInfo = await newApplication.run();
+  applications.push(applicationInfo);
 
-  applications.push(newApp);
-
-  return newApp;
+  return applicationInfo;
 }
 
 async function removeComposer({ composerFile }) {
@@ -44,28 +39,12 @@ async function removeComposer({ composerFile }) {
     const index = applications.indexOf(application);
     applications.splice(index, 1);
 
-    await dockerAPI.removeComposerFile(application.composerPath);
-    await rmFile(application.composerPath);
+    await application.remove();
 
-    return { result: "FILE REMOVED" };
+    return { success: true, result: "FILE REMOVED" };
   }
 
-  return { result: "FILE NOT FOUND" };
-}
-
-async function createConfig(backend, database) {
-  await writeFile(
-    CONFIG_FILE,
-    `
-# CPUS can receive fractions (ex: 0.5)
-# MEMORY receive value measure (ex: 4M)
-
-BK_CPUS=${backend.cpu}
-BK_MEMORY=${backend.ram}
-DB_CPUS=${database.cpu}
-DB_MEMORY=${database.ram}
-`
-  );
+  return { success: false, result: "FILE NOT FOUND" };
 }
 
 module.exports = {
