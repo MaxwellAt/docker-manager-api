@@ -19,7 +19,6 @@ public class UserService {
 
     public String createUser (User request) throws Exception{
 
-        
         if(request.getName()!=null){
             userRepository.save(request);
             return "Usuario criado";
@@ -35,8 +34,12 @@ public class UserService {
             if (existingUser.isPresent()) {
                 User user = existingUser.get();
                 user.setName(request.getName());
+                user.setUsername(request.getUsername());
                 user.setEmail(request.getEmail());
                 user.setPassword(request.getPassword());
+                user.setDateOfBirth(request.getDateOfBirth());
+                user.setGender(request.getGender());
+                user.setLocation(request.getLocation());
 
                 userRepository.save(user);
                 return "Usuario Atualizadooo";

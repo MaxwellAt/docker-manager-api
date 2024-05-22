@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,14 +19,13 @@ import javamongo.com.example.javamongo.Damon.User;
 import javamongo.com.example.javamongo.Services.UserService;
 
 @RestController
-@RequestMapping("api/v1/users")
+@RequestMapping("users")
 public class UserController {
     
     @Autowired
     private UserService userService;
 
-
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<User>> getAll(){
         var response = userService.getAll();
         if(response!=null){
@@ -34,8 +34,8 @@ public class UserController {
         return ResponseEntity.badRequest().build();
     }
 
-    @GetMapping()
-    public ResponseEntity<User> getByEmail(@RequestParam String email){
+    @GetMapping("/{email}")
+    public ResponseEntity<User> getByEmail(@PathVariable String email){
         var response = userService.findEmail(email);
         if(response!=null){
             return ResponseEntity.ok(response);
