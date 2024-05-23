@@ -1,5 +1,6 @@
 javamongo/com/example/javamongo/JavamongoApplication.class
+javamongo/com/example/javamongo/Api/HomeController.class
 javamongo/com/example/javamongo/Services/UserService.class
-javamongo/com/example/javamongo/Infra/UserRepository.class
 javamongo/com/example/javamongo/Api/UserController.class
 javamongo/com/example/javamongo/Damon/User.class
+javamongo/com/example/javamongo/Infra/UserRepository.class
