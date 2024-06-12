@@ -1,0 +1,47 @@
+name: f6ddf9a0-19cc-11ef-9189-6bb2c62913dc
+services:
+  backend:
+    cpus: 0.4
+    command:
+    - /bin/sh
+    - -c
+    - cd /application && npm i && node app
+    environment:
+      DB_HOST: database
+      DB_NAME: postgres
+      DB_PASSWORD: db
+      DB_PORT: "5432"
+      NODE_ENV: postgresEnv
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: db
+    image: node:21-alpine3.17
+    mem_limit: "450887680"
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 3000
+      protocol: tcp
+    volumes:
+    - type: bind
+      source: /home/marcos/dev/docker-manager-api/applications/node
+      target: /application
+      bind:
+        create_host_path: true
+  database:
+    cpus: 0.4
+    environment:
+      DB_HOST: database
+      DB_NAME: postgres
+      DB_PASSWORD: db
+      DB_PORT: "5432"
+      NODE_ENV: postgresEnv
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: db
+    image: postgres:16-alpine3.18
+    mem_limit: "450887680"
+    networks:
+      default: null
+networks:
+  default:
+    name: f6ddf9a0-19cc-11ef-9189-6bb2c62913dc_default

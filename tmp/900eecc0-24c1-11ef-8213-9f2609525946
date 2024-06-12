@@ -1,0 +1,40 @@
+name: 900eecc0-24c1-11ef-8213-9f2609525946
+services:
+  backend:
+    cpus: 0.4
+    command:
+    - /bin/sh
+    - -c
+    - cd app && pip install -r requirements.txt && python manage.py migrate && python
+      manage.py runserver 0.0.0.0:8000
+    environment:
+      POSTGRES_DB: Registrar
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: postgres
+    image: python:3.12.1-slim
+    mem_limit: "407896064"
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 8000
+      protocol: tcp
+    volumes:
+    - type: bind
+      source: /home/marcos/dev/docker-manager-api/applications/python-postgres
+      target: /app
+      bind:
+        create_host_path: true
+  database:
+    cpus: 0.4
+    environment:
+      POSTGRES_DB: Registrar
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: postgres
+    image: postgres:14
+    mem_limit: "355467264"
+    networks:
+      default: null
+networks:
+  default:
+    name: 900eecc0-24c1-11ef-8213-9f2609525946_default

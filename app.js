@@ -1,19 +1,31 @@
-const path = require("path");
 const express = require("express");
+const cors = require("cors");
+const mustacheExpress = require("mustache-express");
+
+const path = require("path");
 const dockerManager = require("./src/dockerManager");
+const scriptManager = require("./src/scriptManager");
 
 const app = express();
-const cors = require("cors");
+const PORT = 8000;
+const URL = `http://localhost`;
+
 app.use(cors());
 
-const PORT = 8000;
+app.engine("mustache", mustacheExpress());
+
+app.set("view engine", "mustache");
+app.set("views", path.join(__dirname, "views"));
 
 app.use(express.json());
-app.use("/", express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
+
+app.get("/", (req, res) => {
+  res.render("index", { URL, PORT });
+});
 
 app.get("/options", async (req, res) => {
   const result = await dockerManager.getAvailablesConfigs();
-  console.log(result);
   res.json({ result });
 });
 
@@ -29,8 +41,17 @@ app.post("/up", async (req, res) => {
 });
 
 app.post("/down", async (req, res) => {
+  console.log(req.body);
   const result = await dockerManager.removeComposer(req.body);
-  res.json(result);
+  res.json({ result });
+});
+
+app.get("/script", async (req, res) => {
+  const port = req.query.port;
+  const type = req.query.type;
+
+  const result = await scriptManager.generateScript(`${URL}:${port}`, type);
+  res.download(result.value);
 });
 
 app.listen(PORT, () => {

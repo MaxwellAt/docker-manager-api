@@ -18,7 +18,7 @@ app.use(
 
 app.get("/", (request, response) => {
   response.json({
-    info: "Basic movies API",
+    info: "Basic users API",
     paths: ["/users", "/users/:id"],
   });
 });

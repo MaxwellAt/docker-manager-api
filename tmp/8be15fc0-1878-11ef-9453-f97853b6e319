@@ -1,0 +1,43 @@
+name: 8be15fc0-1878-11ef-9453-f97853b6e319
+services:
+  backend:
+    cpus: 0.4
+    command:
+    - /bin/sh
+    - -c
+    - cd javamongo &&  java -jar ./target/javamongo.jar
+    environment:
+      BK_PORT: "3000"
+      DB_NAME: database
+      MONGO_INITDB_DATABASE: ""
+      MONGO_INITDB_ROOT_PASSWORD: ""
+      MONGO_INITDB_ROOT_USERNAME: ""
+    image: maven:3.8.4-openjdk-17
+    mem_limit: "555745280"
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 3000
+      protocol: tcp
+    volumes:
+    - type: bind
+      source: /home/marcos/dev/docker-manager-api/applications/javamongo
+      target: /javamongo
+      bind:
+        create_host_path: true
+  database:
+    cpus: 0.6
+    environment:
+      BK_PORT: "3000"
+      DB_NAME: database
+      MONGO_INITDB_DATABASE: ""
+      MONGO_INITDB_ROOT_PASSWORD: ""
+      MONGO_INITDB_ROOT_USERNAME: ""
+    image: mongo:latest
+    mem_limit: "535822336"
+    networks:
+      default: null
+networks:
+  default:
+    name: 8be15fc0-1878-11ef-9453-f97853b6e319_default

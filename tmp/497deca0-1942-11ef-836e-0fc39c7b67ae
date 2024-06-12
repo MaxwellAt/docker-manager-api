@@ -1,0 +1,44 @@
+name: 497deca0-1942-11ef-836e-0fc39c7b67ae
+services:
+  backend:
+    cpus: 0.5
+    command:
+    - /bin/sh
+    - -c
+    - cd javamongo && mvn clean package -DskipTests && mv ./target/*.jar ./target/javamongo.jar
+      && java -jar ./target/javamongo.jar
+    environment:
+      BK_PORT: "3000"
+      DB_NAME: database
+      MONGO_INITDB_DATABASE: ""
+      MONGO_INITDB_ROOT_PASSWORD: ""
+      MONGO_INITDB_ROOT_USERNAME: ""
+    image: maven:3.8.4-openjdk-17
+    mem_limit: "542113792"
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 3000
+      protocol: tcp
+    volumes:
+    - type: bind
+      source: /home/marcos/dev/docker-manager-api/applications/javamongo
+      target: /javamongo
+      bind:
+        create_host_path: true
+  database:
+    cpus: 0.5
+    environment:
+      BK_PORT: "3000"
+      DB_NAME: database
+      MONGO_INITDB_DATABASE: ""
+      MONGO_INITDB_ROOT_PASSWORD: ""
+      MONGO_INITDB_ROOT_USERNAME: ""
+    image: mongo:latest
+    mem_limit: "502267904"
+    networks:
+      default: null
+networks:
+  default:
+    name: 497deca0-1942-11ef-836e-0fc39c7b67ae_default

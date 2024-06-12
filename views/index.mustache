@@ -23,7 +23,8 @@
       crossorigin="anonymous"
     ></script>
 
-    <script src="./script.js" defer></script>
+    <script src="./formFunctions.js" type="module" defer></script>
+    <script src="./script.js" type="module" defer></script>
   </head>
   <body>
     <!-- Nav Bar -->
@@ -32,8 +33,9 @@
         <a class="navbar-brand" href="#">Doc. Docker</a>
       </div>
     </nav>
-
     <main style="margin: 0 auto; margin-top: 100px; max-width: 720px">
+      <input id="url" type="hidden" value="{{ URL }}" />
+      <input id="port" type="hidden" value="{{ PORT }}" />
       <div
         style="
           display: flex;

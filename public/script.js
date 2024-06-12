@@ -1,3 +1,5 @@
+import { submitForm, showTestModal } from "/formFunctions.js";
+
 const configSelection = document.querySelector("#config-selection");
 const backendCpuField = document.querySelector("#backend-cpu");
 const backendRamField = document.querySelector("#backend-ram");
@@ -7,18 +9,19 @@ const databaseRamField = document.querySelector("#database-ram");
 const applications = document.querySelector("#applications");
 const reqBtn = document.querySelector("#request-btn");
 
-const apiURL = "http://localhost";
+const baseUrl = document.querySelector("#url").value;
+const port = document.querySelector("#port").value;
+const apiURL = `${baseUrl}:${port}`;
 
 getConfigurations();
 getApplications();
 
 async function getApplications() {
-  const result = await fetch(apiURL + ":8000/applications", {
+  const result = await fetch(apiURL + "/applications", {
     method: "GET",
   });
 
   const data = await result.json();
-  //console.log(data);
 
   renderApplications(data.result);
 }
@@ -35,7 +38,7 @@ function renderApplications(data) {
 }
 
 async function getConfigurations() {
-  const result = await fetch(apiURL + ":8000/options", {
+  const result = await fetch(apiURL + "/options", {
     method: "GET",
   });
   const data = await result.json();
@@ -76,7 +79,7 @@ async function buildContainer() {
   });
 
   try {
-    const result = await fetch(apiURL + ":8000/up", {
+    const result = await fetch(apiURL + "/up", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -90,16 +93,8 @@ async function buildContainer() {
   }
 }
 
-function removeApplication(composerFile) {
-  fetch(apiURL + ":8000/down", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      composerFile,
-    }),
-  });
+async function removeApplication(composerFile) {
+  return await submitForm(apiURL + "/down", JSON.stringify({ composerFile }));
 }
 
 function getCard({ conf, port, composerFile, backend, database }) {
@@ -136,6 +131,7 @@ function getCard({ conf, port, composerFile, backend, database }) {
     <hr>
     <a href="#" class="run btn btn-secondary">Run</a>
     <a href="#" class="remove btn btn-danger">Remove</a>
+    <button class="test btn btn-primary">Test</button>
   </div>
   </div>`;
 
@@ -143,15 +139,20 @@ function getCard({ conf, port, composerFile, backend, database }) {
   const status = card.querySelector(".status");
   const removeButton = card.querySelector(".remove");
   const runButton = card.querySelector(".run");
+  const testButton = card.querySelector(".test");
 
-  removeButton.addEventListener("click", () => {
-    removeApplication(composerFile);
+  testButton.addEventListener("click", () =>
+    showTestModal("k6 run [SCRIPT_NAME]", apiURL, port)
+  );
+
+  removeButton.addEventListener("click", async () => {
+    const res = await removeApplication(composerFile);
     window.location.reload();
   });
 
   const interval = setInterval(async () => {
     try {
-      await fetch(`${apiURL}:${port}/`);
+      await fetch(`${baseUrl}:${port}/`);
       clearInterval(interval);
       setAvailable();
     } catch (error) {
@@ -161,7 +162,7 @@ function getCard({ conf, port, composerFile, backend, database }) {
 
   function setAvailable() {
     status.style.backgroundColor = "green";
-    runButton.href = `${apiURL}:${port}`;
+    runButton.href = `${baseUrl}:${port}`;
     runButton.className = "run btn btn-primary";
     runButton.target = "_blank";
   }
