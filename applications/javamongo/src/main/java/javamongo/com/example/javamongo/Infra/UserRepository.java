@@ -9,6 +9,7 @@ import javamongo.com.example.javamongo.Damon.User;
 
 public interface UserRepository extends MongoRepository<User, UUID> {
     
+    Optional<User> findById(UUID id);
     Optional<User> findByEmail(String email);
 
     Optional<User> findByName(String name);

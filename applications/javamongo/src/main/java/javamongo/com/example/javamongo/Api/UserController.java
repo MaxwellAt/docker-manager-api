@@ -1,6 +1,7 @@
 package javamongo.com.example.javamongo.Api;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javamongo.com.example.javamongo.Damon.User;
@@ -65,9 +65,9 @@ public class UserController {
     }
 
 
-    @DeleteMapping()
-    public ResponseEntity<?> deleteUsers(@RequestParam String email) throws Exception  {
-        var response = userService.deleteUser(email);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUsers(@PathVariable UUID id) throws Exception  {
+        var response = userService.deleteUser(id);
         if(response!=null){
             return ResponseEntity.ok(response);
         }

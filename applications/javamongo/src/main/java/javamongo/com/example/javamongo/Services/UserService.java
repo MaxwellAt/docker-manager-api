@@ -1,6 +1,7 @@
 package javamongo.com.example.javamongo.Services;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.Optional;
 
 
@@ -17,13 +18,13 @@ public class UserService {
     private UserRepository userRepository;
 
 
-    public String createUser (User request) throws Exception{
+    public User createUser (User request) throws Exception{
 
         if(request.getName()!=null){
-            userRepository.save(request);
-            return "Usuario criado";
+            User user = userRepository.save(request);
+            return user; 
         }
-        return "Erro ao criar o usuario";
+        return null;
 
     }
 
@@ -64,8 +65,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public String deleteUser(String email) {
-        Optional<User> userOptional = userRepository.findByEmail(email);
+    public String deleteUser(UUID id) {
+        Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             userRepository.delete(user);

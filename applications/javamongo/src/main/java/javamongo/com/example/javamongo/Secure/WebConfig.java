@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package javamongo.com.example.javamongo.Secure;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,7 @@ public class WebConfig {
                         .allowedOrigins("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
-                        .allowCredentials(true)
+                        //.allowCredentials(true)
                         .maxAge(3600);
             }
         };
