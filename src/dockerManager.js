@@ -13,6 +13,10 @@ function getApplications() {
   return applications;
 }
 
+function getApplicationById(id) {
+  return applications.find((app) => app.id == id);
+}
+
 async function getAvailablesConfigs() {
   return await readdir(COMPOSERS_FOLDER);
 }
@@ -51,5 +55,6 @@ module.exports = {
   runComposer,
   getAvailablesConfigs,
   getApplications,
+  getApplicationById,
   removeComposer,
 };

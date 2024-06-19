@@ -5,6 +5,7 @@ const mustacheExpress = require("mustache-express");
 const path = require("path");
 const dockerManager = require("./src/dockerManager");
 const scriptManager = require("./src/scriptManager");
+const validation = require("./src/validation");
 
 const app = express();
 const PORT = 8000;
@@ -35,13 +36,28 @@ app.get("/applications", (req, res) => {
 });
 
 app.post("/up", async (req, res) => {
-  const result = await dockerManager.runComposer(req.body);
-  console.log(result);
-  res.json({ success: true, message: "Container build successfully!", result });
+  const validadated = validation.validateApplication(req.body);
+
+  if (validadated) {
+    const result = await dockerManager.runComposer(req.body);
+    res.json({
+      success: true,
+      message: "Container build successfully!",
+      result,
+    });
+  } else {
+    res.json({
+      success: false,
+      message: "Something went wrong, try again!",
+      result: null,
+    });
+  }
 });
 
 app.post("/down", async (req, res) => {
+  // TO-DO: Validate data
   console.log(req.body);
+
   const result = await dockerManager.removeComposer(req.body);
   res.json({ result });
 });

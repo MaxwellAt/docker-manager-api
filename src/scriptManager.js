@@ -5,22 +5,24 @@ const readFile = require("node:util").promisify(fs.readFile);
 const path = require("path");
 const mustache = require("mustache");
 
+const TEST_FILE_FOLDER = path.join(__dirname, "..", "test_files");
 const types = ["smoke", "stress", "breakpoint", "spike", "load", "soak"];
-const TEST_FILE_PATH = path.join(
-  __dirname,
-  "..",
-  "test_files",
-  "template.mustache"
-);
-const TEMP_FILE = path.join(os.tmpdir(), "test_download.js");
 
 async function generateScript(url, type) {
-  const template = await readFile(TEST_FILE_PATH, "utf-8");
-  const fileContent = mustache.render(template, { url, type });
+  // TO-DO: Need to check type is a valid option
+  if (!types.includes(type)) return { success: false };
+
+  const template = await readFile(
+    path.join(TEST_FILE_FOLDER, `${type}.mustache`),
+    "utf-8"
+  );
+
+  const fileContent = mustache.render(template, { url });
 
   try {
-    await writeFile(TEMP_FILE, fileContent, "utf-8");
-    return { success: true, value: TEMP_FILE };
+    const filename = path.join(os.tmpdir(), `${type}_test.js`);
+    await writeFile(filename, fileContent, "utf-8");
+    return { success: true, value: filename };
   } catch (e) {
     return { success: false, value: e };
   }
