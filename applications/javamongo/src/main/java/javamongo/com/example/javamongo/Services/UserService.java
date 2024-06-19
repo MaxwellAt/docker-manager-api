@@ -28,12 +28,13 @@ public class UserService {
 
     }
 
-    public String updateUser(User request) throws Exception {
-        Optional<User> existingUser = userRepository.findByName(request.getName());
-        try {
+    public String updateUser(UUID id, User request) throws Exception {
+        Optional<User> existingUser = userRepository.findById(id);
 
+        try {
             if (existingUser.isPresent()) {
                 User user = existingUser.get();
+
                 user.setName(request.getName());
                 user.setUsername(request.getUsername());
                 user.setEmail(request.getEmail());
@@ -44,9 +45,8 @@ public class UserService {
 
                 userRepository.save(user);
                 return "Usuario Atualizadooo";
-
             } else {
-                    return "Usuário não encontrado";
+                return "Usuário não encontrado";
             }
 
         } catch (Exception e) {

@@ -54,10 +54,10 @@ public class UserController {
         return ResponseEntity.badRequest().build();
     }
 
-    @PutMapping()
-    public ResponseEntity<?> updateUsers(@RequestBody User request) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUsers(@PathVariable UUID id, @RequestBody User request) {
         try {
-            var response = userService.updateUser(request);
+            var response = userService.updateUser(id, request);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar o usuário");
