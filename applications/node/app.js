@@ -27,6 +27,7 @@ app.get("/users", db.getAll);
 app.get("/users/:id", db.getById);
 app.delete("/users/:id", db.deleteById);
 app.post("/users", db.create);
+app.put("/users/:id", db.updateById);
 
 app.listen(PORT, async () => {
   let isConnected = false;

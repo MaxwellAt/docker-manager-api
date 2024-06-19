@@ -1,5 +1,15 @@
 const { Users } = require("./models");
 
+const fieldsNames = [
+  "name",
+  "username",
+  "email",
+  "date",
+  "dateOfBirth",
+  "location",
+  "gender",
+];
+
 const getAll = async (request, response) => {
   try {
     const result = await Users.findAll();
@@ -21,16 +31,6 @@ const getById = async (request, response) => {
 };
 
 const create = async (request, response) => {
-  const fieldsNames = [
-    "name",
-    "username",
-    "email",
-    "date",
-    "dateOfBirth",
-    "location",
-    "gender",
-  ];
-
   const fields = {};
 
   // Adding a default value
@@ -57,9 +57,27 @@ const deleteById = async (request, response) => {
   }
 };
 
+const updateById = async (request, response) => {
+  const { id } = request.params;
+  const fields = {};
+
+  // Adding a default value
+  for (const name of fieldsNames) {
+    fields[name] = request.body[name] || "";
+  }
+
+  try {
+    const result = Users.update(fields, { where: { id } });
+    response.json(result);
+  } catch (err) {
+    response.status(500).json(err);
+  }
+};
+
 module.exports = {
   getAll,
   getById,
   create,
   deleteById,
+  updateById,
 };
