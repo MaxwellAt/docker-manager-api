@@ -142,7 +142,11 @@ function getCard({ conf, port, composerFile, backend, database }) {
   const testButton = card.querySelector(".test");
 
   testButton.addEventListener("click", () =>
-    showTestModal("k6 run [SCRIPT_NAME]", apiURL, port)
+    showTestModal(
+      `k6 run -e HOSTNAME=${baseUrl}:${port} --out json=out.json [SCRIPT_NAME]`,
+      apiURL,
+      port
+    )
   );
 
   removeButton.addEventListener("click", async () => {
@@ -204,14 +208,19 @@ function handleMessage(body) {
 const dataViewers = document.querySelectorAll(".value-viewer");
 dataViewers.forEach((el) => {
   const inputEl = document.getElementById(el.dataset.for);
-  // Get formating
-  const format = el.innerText;
 
-  // set current value
-  el.innerText = inputEl.value + format;
+  el.value = inputEl.value;
 
   // set value on change
   inputEl.addEventListener("input", () => {
-    el.innerText = inputEl.value + format;
+    //el.innerText = inputEl.value + format;
+    el.value = inputEl.value;
+  });
+
+  el.addEventListener("input", () => {
+    const value = Number(el.value);
+    if (el.min <= value && value <= el.max) {
+      inputEl.value = el.value;
+    }
   });
 });

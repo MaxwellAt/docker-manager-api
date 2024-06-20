@@ -13,7 +13,7 @@ async function generateScript(url, type) {
   if (!types.includes(type)) return { success: false };
 
   const template = await readFile(
-    path.join(TEST_FILE_FOLDER, `${type}.mustache`),
+    path.join(TEST_FILE_FOLDER, `${type}.js`),
     "utf-8"
   );
 
