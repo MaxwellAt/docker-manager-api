@@ -63,11 +63,26 @@ app.post("/down", async (req, res) => {
 });
 
 app.get("/script", async (req, res) => {
-  const port = req.query.port;
+  const id = req.query.id;
   const type = req.query.type;
 
-  const result = await scriptManager.generateScript(`${URL}:${port}`, type);
-  res.download(result.value);
+  const application = dockerManager.getApplicationById(id);
+
+  if (application) {
+    const port = application.port;
+    const result = await scriptManager.generateScript(
+      `${URL}:${port}`,
+      type,
+      application
+    );
+    res.download(result.value);
+  } else {
+    res.json({
+      success: false,
+      message: "Something went wrong, try again!",
+      result: null,
+    });
+  }
 });
 
 app.listen(PORT, () => {

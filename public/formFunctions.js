@@ -133,11 +133,11 @@ export function createPhotoPicker(parentId, imgPath, config = {}) {
   parentNode.appendChild(photoPicker);
 }
 
-export function showTestModal(copyText, url, port) {
+export function showTestModal(copyText, url, id) {
   const clipboarHtml = `
     <div style="margin-bottom: 10px">
     <input type="text" value="${copyText}" disabled style="width: 250px">
-    <button id="copy" class="btn btn-primary" style="width: 100px " >Copy</button>
+    <button id="copy" class="btn btn-primary" style="width: 100px">Copy</button>
     </div>
 
     <div>
@@ -176,8 +176,7 @@ export function showTestModal(copyText, url, port) {
       const testType = sweetalert2.getPopup().querySelector("#test-type");
 
       downloadButton.addEventListener("click", async () => {
-        downloadButton.href = `${url}/script/?type=${testType.value}&port=${port}`;
-        //const res = await fetch();
+        downloadButton.href = `${url}/script/?type=${testType.value}&id=${id}`;
       });
     },
   });

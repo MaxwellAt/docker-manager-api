@@ -145,7 +145,7 @@ function getCard({ conf, port, composerFile, backend, database }) {
     showTestModal(
       `k6 run -e HOSTNAME=${baseUrl}:${port} --out json=out.json [SCRIPT_NAME]`,
       apiURL,
-      port
+      composerFile
     )
   );
 
