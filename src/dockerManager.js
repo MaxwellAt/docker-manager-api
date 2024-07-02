@@ -1,11 +1,10 @@
+const { Application } = require("./application");
 const { promisify } = require("node:util");
 
 const fs = require("fs");
 const readdir = promisify(fs.readdir);
 
 const COMPOSERS_FOLDER = "./composers";
-
-const { Application } = require("./application");
 
 const applications = [];
 
@@ -14,7 +13,7 @@ function getApplications() {
 }
 
 function getApplicationById(id) {
-  return applications.find((app) => app.id == id);
+  return applications.find((app) => app.composerFile == id);
 }
 
 async function getAvailablesConfigs() {
