@@ -97,7 +97,8 @@ async function removeApplication(composerFile) {
   return await submitForm(apiURL + "/down", JSON.stringify({ composerFile }));
 }
 
-function getCard({ conf, port, composerFile, backend, database }) {
+function getCard(application) {
+  const { conf, port, composerFile, backend, database } = application;
   const card = document.createElement("div");
   card.innerHTML = `
   <div class="card my-3">
@@ -142,11 +143,7 @@ function getCard({ conf, port, composerFile, backend, database }) {
   const testButton = card.querySelector(".test");
 
   testButton.addEventListener("click", () =>
-    showTestModal(
-      `k6 run -e HOSTNAME=${baseUrl}:${port} --out json=out.json [SCRIPT_NAME]`,
-      apiURL,
-      composerFile
-    )
+    showTestModal(apiURL, baseUrl, application)
   );
 
   removeButton.addEventListener("click", async () => {

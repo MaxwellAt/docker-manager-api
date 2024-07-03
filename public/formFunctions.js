@@ -133,10 +133,13 @@ export function createPhotoPicker(parentId, imgPath, config = {}) {
   parentNode.appendChild(photoPicker);
 }
 
-export function showTestModal(copyText, url, id) {
+export function showTestModal(url, baseUrl, application) {
+  const id = application.composerFile;
+  const copyText = getCopyText(baseUrl, application);
+
   const clipboarHtml = `
     <div style="margin-bottom: 10px">
-    <input type="text" value="${copyText}" disabled style="width: 250px">
+    <input id="copy-field" type="text" value="${copyText}" disabled style="width: 250px">
     <button id="copy" class="btn btn-primary" style="width: 100px">Copy</button>
     </div>
 
@@ -174,10 +177,34 @@ export function showTestModal(copyText, url, id) {
       // Download test file logic
       const downloadButton = sweetalert2.getPopup().querySelector("#download");
       const testType = sweetalert2.getPopup().querySelector("#test-type");
+      const copyField = sweetalert2.getPopup().querySelector("#copy-field");
 
       downloadButton.addEventListener("click", async () => {
         downloadButton.href = `${url}/script/?type=${testType.value}&id=${id}`;
       });
+
+      testType.addEventListener("change", () => {
+        const type = testType.value;
+        copyField.value = getCopyText(url, application, type);
+      });
     },
   });
+}
+
+function getFilename(application, type) {
+  let { backend, database } = application;
+  let filename = `${application.conf}`;
+  filename += `_${backend.cpu}_${backend.ram}`;
+  filename += `_${database.cpu}_${database.ram}`;
+  filename += `_${type}`;
+
+  return filename;
+}
+
+function getCopyText(url, application, type = "smoke") {
+  let filename = getFilename(application, type);
+  const hostname = `${url}:${application.port}`;
+  const copyText = `k6 run -e HOSTNAME=${hostname} --out json=${filename}.json ${filename}.js`;
+
+  return copyText;
 }
