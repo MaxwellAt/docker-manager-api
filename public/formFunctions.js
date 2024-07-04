@@ -185,7 +185,7 @@ export function showTestModal(url, baseUrl, application) {
 
       testType.addEventListener("change", () => {
         const type = testType.value;
-        copyField.value = getCopyText(url, application, type);
+        copyField.value = getCopyText(baseUrl, application, type);
       });
     },
   });
