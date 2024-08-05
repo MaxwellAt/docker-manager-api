@@ -10,6 +10,7 @@ services:
     ports:
       - 3000
     command: /bin/sh -c "cd javamongo && java -jar ./target/javamongo.jar"
+    #&& mvn clean package -DskipTests && mv ./target/*.jar ./target/javamongo.jar
   database:
     image: mongo:latest
     cpus: ${DB_CPUS}
