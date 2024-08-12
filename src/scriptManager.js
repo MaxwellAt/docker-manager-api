@@ -1,3 +1,4 @@
+const config = require("./config");
 const fs = require("fs");
 const os = require("os");
 const writeFile = require("node:util").promisify(fs.writeFile);
@@ -5,8 +6,8 @@ const readFile = require("node:util").promisify(fs.readFile);
 const path = require("path");
 const mustache = require("mustache");
 
-const TEST_FILE_FOLDER = path.join(__dirname, "..", "test_files");
-const types = ["smoke", "stress", "breakpoint", "spike", "load", "soak"];
+const { TEST_FOLDER } = config.paths;
+const { types } = config.applications;
 
 function getFilename(application, type) {
   let { backend, database } = application;
@@ -23,7 +24,7 @@ async function generateScript(url, type, application) {
   if (!types.includes(type)) return { success: false };
 
   const template = await readFile(
-    path.join(TEST_FILE_FOLDER, `${type}.js`),
+    path.join(TEST_FOLDER, `${type}.js`),
     "utf-8"
   );
 

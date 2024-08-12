@@ -1,16 +1,14 @@
 const fs = require("fs");
 const path = require("path");
 const uuid = require("uuid");
+const config = require("./config");
 
 const { promisify } = require("node:util");
 const exec = promisify(require("node:child_process").exec);
 const writeFile = promisify(fs.writeFile);
 const rmFile = promisify(fs.rm);
 
-const ENV_FILE = "./config.env";
-const TMP_FOLDER = "./tmp";
-const COMPOSER_FOLDER = "./composers";
-const CONFIG_FILE = "./config.env";
+const { ENV_FILE, CONFIG_FILE, TMP_FOLDER, COMPOSER_FOLDER } = config.paths;
 
 async function getContainerPort(container) {
   const command = `docker port ${container}-backend-1`;

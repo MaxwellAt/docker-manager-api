@@ -1,10 +1,11 @@
+const config = require("./config");
 const { Application } = require("./application");
 const { promisify } = require("node:util");
 
 const fs = require("fs");
 const readdir = promisify(fs.readdir);
 
-const COMPOSERS_FOLDER = "./composers";
+const { COMPOSER_FOLDER } = config.paths;
 
 const applications = [];
 
@@ -17,7 +18,7 @@ function getApplicationById(id) {
 }
 
 async function getAvailablesConfigs() {
-  return await readdir(COMPOSERS_FOLDER);
+  return await readdir(COMPOSER_FOLDER);
 }
 
 async function runComposer({ conf, backend, database }) {

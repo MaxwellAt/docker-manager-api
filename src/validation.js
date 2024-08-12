@@ -1,3 +1,4 @@
+const config = require("./config");
 const os = require("node:os");
 
 const symbols = {
@@ -6,11 +7,7 @@ const symbols = {
   G: 2 ** 30,
 };
 
-const MINIMUN_RAM = 1 * symbols.K;
-const MAXIMUN_RAM = 1 * symbols.G;
-
-const MINIMUN_CPU = 0.1;
-const MAXIMUN_CPU = os.cpus().length;
+const { MINIMUN_CPU, MAXIMUN_CPU, MINIMUN_RAM, MAXIMUN_RAM } = config.machine;
 
 function convertToBytes(memory) {
   try {
