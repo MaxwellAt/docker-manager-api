@@ -1,2 +1,4 @@
 node_modules
 docker_compose.yaml
+tmp
+config.env
