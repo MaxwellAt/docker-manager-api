@@ -1,3 +1,4 @@
+const config = require("./src/config");
 const express = require("express");
 const cors = require("cors");
 const mustacheExpress = require("mustache-express");
@@ -22,7 +23,15 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
-  res.render("index", { URL, PORT });
+  console.log(config);
+  res.render("index", { 
+    URL, 
+    PORT, 
+    MINIMUN_CPU: config.machine.MINIMUN_CPU,
+    MAXIMUN_CPU: config.machine.MAXIMUN_CPU,
+    MINIMUN_RAM: config.machine.MINIMUN_RAM / 2 ** 20,
+    MAXIMUN_RAM: config.machine.MAXIMUN_RAM / 2 ** 20,
+   });
 });
 
 app.get("/options", async (req, res) => {

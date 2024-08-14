@@ -4,9 +4,9 @@ import { sleep } from "k6";
 // Load
 const load = {
   stages: [
-    { target: 50, duration: "5m" },
-    { target: 100, duration: "10m" },
-    { target: 50, duration: "5m" },
+    { target: 100, duration: "3m" },
+    { target: 1000, duration: "10m" },
+    { target: 100, duration: "3m" },
   ],
 };
 

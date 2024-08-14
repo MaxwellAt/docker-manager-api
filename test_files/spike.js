@@ -4,8 +4,11 @@ import { sleep } from "k6";
 // Spike
 const spike = {
   stages: [
-    { target: 1000, duration: "1m" },
-    { target: 0, duration: "10s" },
+    { target: 500, duration: "1m" },
+    { target: 5000, duration: "25s" },
+    { target: 500, duration: "1m" },
+    { target: 5000, duration: "25s" },
+    { target: 500, duration: "1m" },
   ],
 };
 

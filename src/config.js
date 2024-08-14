@@ -20,7 +20,7 @@ module.exports = {
   machine: {
     MINIMUN_CPU: 0.1,
     MAXIMUN_CPU: os.cpus().length,
-    MINIMUN_RAM: 1 * symbols.K,
+    MINIMUN_RAM: 100 * symbols.M,
     MAXIMUN_RAM: 1 * symbols.G,
   },
   applications: {
