@@ -23,15 +23,16 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
-  console.log(config);
-  res.render("index", { 
-    URL, 
-    PORT, 
+  res.render("index", {
+    URL,
+    PORT,
+    CPU_MODEL: config.machine.CPU_MODEL,
+    TOTAL_RAM: config.machine.TOTAL_RAM,
     MINIMUN_CPU: config.machine.MINIMUN_CPU,
     MAXIMUN_CPU: config.machine.MAXIMUN_CPU,
     MINIMUN_RAM: config.machine.MINIMUN_RAM / 2 ** 20,
     MAXIMUN_RAM: config.machine.MAXIMUN_RAM / 2 ** 20,
-   });
+  });
 });
 
 app.get("/options", async (req, res) => {

@@ -23,6 +23,10 @@
       crossorigin="anonymous"
     ></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js" defer></script> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css">
+
     <script src="./formFunctions.js" type="module" defer></script>
     <script src="./script.js" type="module" defer></script>
   </head>
@@ -36,6 +40,19 @@
     <main style="margin: 0 auto; margin-top: 100px; max-width: 720px">
       <input id="url" type="hidden" value="{{ URL }}" />
       <input id="port" type="hidden" value="{{ PORT }}" />
+
+      <div class="card p-4 mb-4">
+        <h4>Hardware Info</h4>
+        <div class="flex">
+          <span style="font-weight:bold">Cpu model:</span>
+          <span id="cpu-model">{{CPU_MODEL}}</span>
+        </div>
+        <div class="flex">
+          <span style="font-weight:bold">Memory:</span>
+          <span id="total-mem">{{TOTAL_RAM}}M</span>
+        </div>
+      </div>  
+
       <div
         style="
           display: flex;

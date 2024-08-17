@@ -18,10 +18,12 @@ module.exports = {
     TEST_FOLDER: path.join(__dirname, "..", "test_files"),
   },
   machine: {
+    CPU_MODEL: os.cpus()[0].model,
     MINIMUN_CPU: 0.1,
     MAXIMUN_CPU: os.cpus().length,
     MINIMUN_RAM: 100 * symbols.M,
     MAXIMUN_RAM: 1 * symbols.G,
+    TOTAL_RAM: (os.totalmem() / symbols.M).toFixed(2),
   },
   applications: {
     types: ["smoke", "stress", "breakpoint", "spike", "load", "soak"],
