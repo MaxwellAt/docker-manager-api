@@ -1,4 +1,4 @@
-const config = require("./config");
+const config = require("./config").getHardwareInfo();
 const os = require("node:os");
 
 const symbols = {

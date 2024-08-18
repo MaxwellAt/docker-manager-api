@@ -23,13 +23,10 @@
       crossorigin="anonymous"
     ></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js" defer></script> 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css">
-
     <script src="./formFunctions.js" type="module" defer></script>
     <script src="./script.js" type="module" defer></script>
   </head>
+
   <body>
     <!-- Nav Bar -->
     <nav class="navbar fixed-top bg-body-tertiary" data-bs-theme="dark">
@@ -44,14 +41,14 @@
       <div class="card p-4 mb-4">
         <h4>Hardware Info</h4>
         <div class="flex">
-          <span style="font-weight:bold">Cpu model:</span>
-          <span id="cpu-model">{{CPU_MODEL}}</span>
+          <span style="font-weight: bold">Cpu model:</span>
+          <span id="cpu-model">{{ CPU_MODEL }}</span>
         </div>
         <div class="flex">
-          <span style="font-weight:bold">Memory:</span>
-          <span id="total-mem">{{TOTAL_RAM}}M</span>
+          <span style="font-weight: bold">Memory Usage:</span>
+          <span id="total-mem">{{ FREE_RAM }}/{{ TOTAL_RAM }} MB</span>
         </div>
-      </div>  
+      </div>
 
       <div
         style="
@@ -136,7 +133,14 @@
                             justify-content: space-between;
                           "
                           >Cpus
-                          <input type="number" class="value-viewer" data-for="backend-cpu" min="{{ MINIMUN_CPU }}" max="{{ MAXIMUN_CPU }}" step="0.1"/>
+                          <input
+                            type="number"
+                            class="value-viewer"
+                            data-for="backend-cpu"
+                            min="{{ MINIMUN_CPU }}"
+                            max="{{ MAXIMUN_CPU }}"
+                            step="0.1"
+                          />
                         </label>
 
                         <input
@@ -158,10 +162,15 @@
                             justify-content: space-between;
                           "
                           >Mem. Ram
-                          <input type="number" class="value-viewer" data-for="backend-ram" min="{{ MINIMUN_RAM }}" max="{{ MAXIMUN_RAM }}"/>
-                          </label
-                        >
-                        
+                          <input
+                            type="number"
+                            class="value-viewer"
+                            data-for="backend-ram"
+                            min="{{ MINIMUN_RAM }}"
+                            max="{{ MAXIMUN_RAM }}"
+                          />
+                        </label>
+
                         <input
                           type="range"
                           class="form-range"
@@ -192,7 +201,6 @@
                     <div class="accordion-body">
                       <!-- DATABASE CONFIG -->
                       <div>
-
                         <label
                           for="database-cpu"
                           class="form-label"
@@ -202,7 +210,14 @@
                             justify-content: space-between;
                           "
                           >Cpus
-                          <input type="number" class="value-viewer" data-for="database-cpu" min="{{ MINIMUN_CPU }}" max="{{ MAXIMUN_CPU }}" step="0.1"/>
+                          <input
+                            type="number"
+                            class="value-viewer"
+                            data-for="database-cpu"
+                            min="{{ MINIMUN_CPU }}"
+                            max="{{ MAXIMUN_CPU }}"
+                            step="0.1"
+                          />
                         </label>
 
                         <input
@@ -224,7 +239,13 @@
                             justify-content: space-between;
                           "
                           >Mem. Ram
-                          <input type="number" class="value-viewer" data-for="database-ram" min="{{ MINIMUN_RAM}}" max="{{ MAXIMUN_RAM}}"/>
+                          <input
+                            type="number"
+                            class="value-viewer"
+                            data-for="database-ram"
+                            min="{{ MINIMUN_RAM }}"
+                            max="{{ MAXIMUN_RAM }}"
+                          />
                         </label>
 
                         <input
@@ -236,7 +257,6 @@
                           value="50"
                           id="database-ram"
                         />
-
                       </div>
                     </div>
                   </div>

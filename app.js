@@ -1,4 +1,4 @@
-const config = require("./src/config");
+const { getHardwareInfo } = require("./src/config");
 const express = require("express");
 const cors = require("cors");
 const mustacheExpress = require("mustache-express");
@@ -23,11 +23,13 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
+  const config = getHardwareInfo();
   res.render("index", {
     URL,
     PORT,
     CPU_MODEL: config.machine.CPU_MODEL,
     TOTAL_RAM: config.machine.TOTAL_RAM,
+    FREE_RAM: config.machine.FREE_RAM,
     MINIMUN_CPU: config.machine.MINIMUN_CPU,
     MAXIMUN_CPU: config.machine.MAXIMUN_CPU,
     MINIMUN_RAM: config.machine.MINIMUN_RAM / 2 ** 20,

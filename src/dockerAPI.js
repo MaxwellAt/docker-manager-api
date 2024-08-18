@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const uuid = require("uuid");
-const config = require("./config");
+const config = require("./config").getHardwareInfo();
 
 const { promisify } = require("node:util");
 const exec = promisify(require("node:child_process").exec);

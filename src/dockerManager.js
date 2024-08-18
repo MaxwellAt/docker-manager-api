@@ -1,4 +1,4 @@
-const config = require("./config");
+const config = require("./config").getHardwareInfo();
 const { Application } = require("./application");
 const { promisify } = require("node:util");
 

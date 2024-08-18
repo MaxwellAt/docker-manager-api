@@ -1,4 +1,4 @@
-const config = require("./config");
+const config = require("./config").getHardwareInfo();
 const fs = require("fs");
 const os = require("os");
 const writeFile = require("node:util").promisify(fs.writeFile);
