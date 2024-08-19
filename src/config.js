@@ -9,7 +9,7 @@ const symbols = {
 
 function getHardwareInfo() {
   return {
-    API_URL: `http://localhost`,
+    URL: `http://localhost`,
     PORT: 8000,
     paths: {
       ENV_FILE: "./config.env",

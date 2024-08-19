@@ -9,8 +9,7 @@ const scriptManager = require("./src/scriptManager");
 const validation = require("./src/validation");
 
 const app = express();
-const PORT = 8000;
-const URL = `http://localhost`;
+const { PORT, URL } = getHardwareInfo();
 
 app.use(cors());
 
