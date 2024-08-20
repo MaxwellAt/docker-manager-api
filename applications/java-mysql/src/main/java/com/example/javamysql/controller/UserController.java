@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("users")
 public class UserController {
 
     @Autowired

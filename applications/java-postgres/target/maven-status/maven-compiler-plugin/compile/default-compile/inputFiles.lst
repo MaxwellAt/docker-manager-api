@@ -1,6 +1,6 @@
-/java-postgres/src/main/java/com/example/javamysql/JavaMysqlApplication.java
-/java-postgres/src/main/java/com/example/javamysql/controller/HomeController.java
-/java-postgres/src/main/java/com/example/javamysql/controller/UserController.java
-/java-postgres/src/main/java/com/example/javamysql/model/User.java
-/java-postgres/src/main/java/com/example/javamysql/repository/UserRepository.java
-/java-postgres/src/main/java/com/example/javamysql/service/UserService.java
+/home/marcos/dev/docker-manager-api/applications/java-postgres/src/main/java/com/example/javamysql/JavaMysqlApplication.java
+/home/marcos/dev/docker-manager-api/applications/java-postgres/src/main/java/com/example/javamysql/controller/HomeController.java
+/home/marcos/dev/docker-manager-api/applications/java-postgres/src/main/java/com/example/javamysql/controller/UserController.java
+/home/marcos/dev/docker-manager-api/applications/java-postgres/src/main/java/com/example/javamysql/model/User.java
+/home/marcos/dev/docker-manager-api/applications/java-postgres/src/main/java/com/example/javamysql/repository/UserRepository.java
+/home/marcos/dev/docker-manager-api/applications/java-postgres/src/main/java/com/example/javamysql/service/UserService.java
