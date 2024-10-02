@@ -18,39 +18,48 @@ import json
 def get_users(request):
 
     if request.method == 'GET':
-
         users = User.objects.all()                          # Get all objects in User's database (It returns a queryset)
-
         serializer = UserSerializer(users, many=True)       # Serialize the object data into json (Has a 'many' parameter cause it's a queryset)
+        return Response({
+            "message": "Usuários encontrados",
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)  # Código 200 OK para GET com sucesso                    # Return the serialized data
 
-        return Response(serializer.data)                    # Return the serialized data
-    
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 
 @api_view(['GET', 'PUT'])
-def get_by_nick(request, nick):
+def get_by_id(request, id):
 
     try:
-        user = User.objects.get(pk=nick)
-    except:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        user = User.objects.get(pk=id)
+    except User.DoesNotExist:
+        return Response({
+            "message": "Usuário não encontrado"
+        }, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-
         serializer = UserSerializer(user)
-        return Response(serializer.data)
+        return Response({
+            "message": "Usuário encontrado",
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)  # Código 200 OK para GET com sucesso
 
     if request.method == 'PUT':
-
-        serializer = UserSerializer(user, data=request.data)
+        serializer = UserSerializer(user, data=request.data, partial=True)
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+            return Response({
+                "message": "Usuário atualizado com êxito!",
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
 
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response({
+            "message": "Erro ao atualizar usuário. Verifique os dados e tente novamente.",
+            "errors": serializer.errors
+        }, status=status.HTTP_404_NOT_FOUND)
 
 
 
@@ -59,28 +68,22 @@ def get_by_nick(request, nick):
 @api_view(['GET','POST','PUT','DELETE'])
 def user_manager(request):
 
-# ACESSOS
-
     if request.method == 'GET':
-
-        try:
-            if request.GET['user']:                         # Check if there is a get parameter called 'user' (/?user=xxxx&...)
-
-                user_nickname = request.GET['user']         # Find get parameter
-
-                try:
-                    user = User.objects.get(pk=user_nickname)   # Get the object in database
-                except:
-                    return Response(status=status.HTTP_404_NOT_FOUND)
-
-                serializer = UserSerializer(user)           # Serialize the object data into json
-                return Response(serializer.data)            # Return the serialized data
-
-            else:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-            
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        user_id = request.GET.get('id')
+        if user_id:
+            try:
+                user = User.objects.get(pk=user_id)
+                serializer = UserSerializer(user)
+                return Response({
+                    "message": "Usuário encontrado",
+                    "data": serializer.data
+                }, status=status.HTTP_200_OK)   # Código 200 OK para GET com sucesso
+            except User.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+        else:
+            users = User.objects.all()
+            serializer = UserSerializer(users, many=True)
+            return Response(serializer.data)
 
     
 
@@ -89,53 +92,74 @@ def user_manager(request):
     if request.method == 'POST':
 
         new_user = request.data
-        
         serializer = UserSerializer(data=new_user)
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                "message": "Usuário cadastrado com sucesso!",
+                "data": serializer.data
+            }, status=status.HTTP_201_CREATED)
+
+        return Response({
+            "message": "Erro ao cadastrar usuário. Verifique os dados e tente novamente.",
+            "errors": serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
 
 
 
-
+"""
 # EDITAR DADOS (PUT)
 
     if request.method == 'PUT':
-
-        nickname = request.data['user_nickname']
+        # Obtém o 'user_id' do corpo da requisição
+        user_id = request.data.get('id')
+        
+        # Verifica se 'user_id' está presente no corpo da requisição
+        if not user_id:
+            return Response({
+                "message": "O campo 'user_nickname' é obrigatório."
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            updated_user = User.objects.get(pk=nickname)
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            updated_user = User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return Response({
+                "message": "Usuário não encontrado."
+            }, status=status.HTTP_404_NOT_FOUND)
 
-        
-        #print('Resultado final ', fn.soma(1,2))
-
-        serializer = UserSerializer(updated_user, data=request.data)
+        # Cria o serializer com os dados atualizados
+        serializer = UserSerializer(updated_user, data=request.data, partial=True)
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
-        
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                "message": "Usuário atualizado com êxito!",
+                "data": serializer.data
+            }, status=status.HTTP_202_ACCEPTED)
 
+        return Response({
+            "message": "Erro ao atualizar usuário. Verifique os dados e tente novamente.",
+            "errors": serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
 
+"""
 
 
 # DELETAR DADOS (DELETE)
+@api_view(['DELETE'])  # Define que a view só aceita requisições DELETE
+def delete_user_by_id(request, id):
+    try:
+        user_to_delete = User.objects.get(pk=id)  # Busca o usuário pelo username
+        user_to_delete.delete()  # Deleta o usuário
+        return Response({
+            "message": f"Usuário '{id}' excluído com sucesso!"
+        }, status=status.HTTP_204_NO_CONTENT)
 
-    if request.method == 'DELETE':
-
-        try:
-            user_to_delete = User.objects.get(pk=request.data['user_nickname'])
-            user_to_delete.delete()
-            return Response(status=status.HTTP_202_ACCEPTED)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+    except User.DoesNotExist:
+        return Response({
+            "message": f"Usuário '{id}' não encontrado."
+        }, status=status.HTTP_404_NOT_FOUND)
 
 
 

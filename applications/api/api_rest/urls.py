@@ -5,6 +5,7 @@ from . import views
 
 urlpatterns = [
     path('', views.get_users, name='get_all_users'),
-    path('user/<str:nick>', views.get_by_nick),
-    path('data/', views.user_manager)
+    path('users/<int:id>', views.get_by_id),
+    path('users', views.user_manager),
+    path('users/<int:id>/', views.delete_user_by_id) # Nova rota para DELETE
 ]

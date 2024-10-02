@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-0rr8%ux&+j(a(nfmm@$ykyjcs+66xykvilks4en4)5j81pwj4o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': 'Registrar',
         'USER': 'postgres',
         'PASSWORD': 'admin',
-        'HOST': 'db',
+        'HOST': 'database',#db
         'PORT': 5432,
     }
 }
@@ -130,7 +130,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CORS_ALLOW_ALL_ORIGINS = True
 
-CORS_ALLOW_ORIGINS = [
-    'http://localhost:8000'
-]
+
+# CORS_ALLOW_ORIGINS = [
+#     'http://localhost:8000'
+# ]
