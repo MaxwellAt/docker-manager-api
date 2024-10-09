@@ -28,7 +28,7 @@ function getHardwareInfo() {
       FREE_RAM: (os.freemem() / symbols.M).toFixed(2),
     },
     applications: {
-      types: ["smoke", "stress", "breakpoint", "spike", "load", "soak"],
+      types: ["smoke", "stress", "breakpoint", "spike", "load", "soak", "get", "post", "put", "delete"],
     },
   };
 }
