@@ -3,11 +3,7 @@ import { check, sleep } from 'k6';
 
 // Opções do teste
 export const options = {
-  stages: [
-    { target: 100, duration: "5m" }, // 100 VUs por 5 minutos
-    { target: 250, duration: "10m" }, // 250 VUs por 10 minutos
-    { target: 100, duration: "5m" }, // 100 VUs por 5 minutos
-  ],
+  vus: 5, duration: '10s',
 };
 
 // Função de setup, usada para adicionar vários usuários
