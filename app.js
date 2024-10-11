@@ -76,6 +76,7 @@ app.post("/down", async (req, res) => {
 app.get("/script", async (req, res) => {
   const id = req.query.id;
   const type = req.query.type;
+  const method = req.query.method;
 
   const application = dockerManager.getApplicationById(id);
 
@@ -84,7 +85,8 @@ app.get("/script", async (req, res) => {
     const result = await scriptManager.generateScript(
       `${URL}:${port}`,
       type,
-      application
+      application,
+      method
     );
     res.download(result.value);
   } else {

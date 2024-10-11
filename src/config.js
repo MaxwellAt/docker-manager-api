@@ -17,6 +17,10 @@ function getHardwareInfo() {
       COMPOSER_FOLDER: "./composers",
       CONFIG_FILE: "./config.env",
       TEST_FOLDER: path.join(__dirname, "..", "test_files"),
+      GET_FOLDER: path.join(__dirname, "../test_files", "get_files"),
+      POST_FOLDER: path.join(__dirname, "../test_files", "post_files"),
+      PUT_FOLDER: path.join(__dirname, "../test_files", "put_files"),
+      DELETE_FOLDER: path.join(__dirname, "../test_files", "delete_files"),
     },
     machine: {
       CPU_MODEL: os.cpus()[0].model,
@@ -28,7 +32,7 @@ function getHardwareInfo() {
       FREE_RAM: (os.freemem() / symbols.M).toFixed(2),
     },
     applications: {
-      types: ["smoke", "stress", "breakpoint", "spike", "load", "soak", "get", "post", "put", "delete"],
+      types: ["smoke", "stress", "breakpoint", "spike", "load", "soak"],
     },
   };
 }

@@ -19,14 +19,22 @@ function getFilename(application, type) {
   return path.join(os.tmpdir(), `${filename}.js`);
 }
 
-async function generateScript(url, type, application) {
+async function generateScript(url, type, application, method) {
   // TO-DO: Need to check type is a valid option
   if (!types.includes(type)) return { success: false };
 
-  const template = await readFile(
+  let template = await readFile(
     path.join(TEST_FOLDER, `${type}.js`),
     "utf-8"
   );
+
+  if(method!="ALL"){
+    let path_name = method.toUpperCase() + "_FOLDER";
+    template = await readFile(
+      path.join(config.paths[path_name], `${type}.js`),
+      "utf-8"
+    )
+  }
 
   const fileContent = mustache.render(template, { url });
 

@@ -145,6 +145,18 @@ export function showTestModal(url, baseUrl, application) {
 
     <div>
       <label for="test-type" style="display: block">Test Script:</label>
+      <div id="method">
+          <input type="radio" id="get" name="http-method" value="GET">
+          <label for="get">GET</label>
+          <input type="radio" id="post" name="http-method" value="POST">
+          <label for="post">POST</label>
+          <input type="radio" id="put" name="http-method" value="PUT">
+          <label for="put">PUT</label>
+          <input type="radio" id="delete" name="http-method" value="DELETE">
+          <label for="delete">DELETE</label>
+          <input type="radio" id="all" name="http-method" value="ALL" checked>
+          <label for="all">ALL</label>
+      </div>
       <select id="test-type" style="width: 250px">
         <option value="smoke">smoke</option>
         <option value="load">load</option>
@@ -182,9 +194,13 @@ export function showTestModal(url, baseUrl, application) {
       const downloadButton = sweetalert2.getPopup().querySelector("#download");
       const testType = sweetalert2.getPopup().querySelector("#test-type");
       const copyField = sweetalert2.getPopup().querySelector("#copy-field");
+      let method = sweetalert2.getPopup().querySelector("#method");
+      method.addEventListener("change", () => {
+        method = sweetalert2.getPopup().querySelector("input[name='http-method']:checked");
+      });
 
       downloadButton.addEventListener("click", async () => {
-        downloadButton.href = `${url}/script/?type=${testType.value}&id=${id}`;
+        downloadButton.href = `${url}/script/?type=${testType.value}&id=${id}&method=${method.value}`;
       });
 
       testType.addEventListener("change", () => {
