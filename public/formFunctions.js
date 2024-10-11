@@ -195,6 +195,8 @@ export function showTestModal(url, baseUrl, application) {
       const testType = sweetalert2.getPopup().querySelector("#test-type");
       const copyField = sweetalert2.getPopup().querySelector("#copy-field");
       let method = sweetalert2.getPopup().querySelector("#method");
+      
+      method = sweetalert2.getPopup().querySelector("input[name='http-method']:checked");
       method.addEventListener("change", () => {
         method = sweetalert2.getPopup().querySelector("input[name='http-method']:checked");
       });
