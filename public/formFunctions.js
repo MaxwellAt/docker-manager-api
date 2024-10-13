@@ -164,10 +164,6 @@ export function showTestModal(url, baseUrl, application) {
         <option value="spike">spike</option>
         <option value="soak">soak</option>
         <option value="breakpoint">breakpoint</option>
-        <option value="get">get</option>
-        <option value="post">post</option>
-        <option value="put">put</option>
-        <option value="delete">delete</option>
       </select> 
       <a id="download" class="btn btn-primary" href="#" style="width: 100px">Download</a>
     </div>
