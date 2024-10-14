@@ -1,10 +1,16 @@
-import http from 'k6/http';
-import {sleep} from 'k6';
+import http from "k6/http";
+import { sleep } from "k6";
 
-// Opções do teste
-export const options = {
-  vus: 5, duration: '15s',
+// Load
+const load = {
+  stages: [
+    { target: 100, duration: "3m" },
+    { target: 1000, duration: "10m" },
+    { target: 100, duration: "3m" },
+  ],
 };
+
+export const options = load;
 
 
 // Função principal (executada pelos VUs)

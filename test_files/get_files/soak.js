@@ -1,11 +1,16 @@
-import http from 'k6/http';
-import {sleep} from 'k6';
+import http from "k6/http";
+import { sleep } from "k6";
 
-// Opções do teste
-export const options = {
-  vus: 5, duration: '15s',
+// Soak
+const soak = {
+  stages: [
+    { target: 50, duration: "5m" },
+    { target: 100, duration: "1h" },
+    { target: 50, duration: "5m" },
+  ],
 };
 
+export const options = soak;
 
 // Função principal (executada pelos VUs)
 export default function () {
