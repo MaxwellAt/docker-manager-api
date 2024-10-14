@@ -11,6 +11,7 @@ const spike = {
     { target: 500, duration: "1m" },
   ],
 };
+const baseUrl = `${__ENV.HOSTNAME}`;
 
 export const options = spike;
 

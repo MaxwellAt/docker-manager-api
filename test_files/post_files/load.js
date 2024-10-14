@@ -9,6 +9,7 @@ const load = {
     { target: 100, duration: "3m" },
   ],
 };
+const baseUrl = `${__ENV.HOSTNAME}`;
 
 export const options = load;
 

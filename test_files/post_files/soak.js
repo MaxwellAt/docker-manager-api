@@ -9,6 +9,7 @@ const soak = {
     { target: 50, duration: "5m" },
   ],
 };
+const baseUrl = `${__ENV.HOSTNAME}`;
 
 export const options = soak;
 
